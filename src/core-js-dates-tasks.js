@@ -217,9 +217,8 @@ function getCountWeekendsInMonth(month, year) {
  * Date(2024, 1, 23) => 8
  */
 function getWeekNumberByDate(date) {
-  const startYear = new Date(date);
-  startYear.setMonth(0);
-  startYear.setDate(1);
+  const year = date.getFullYear();
+  const startYear = new Date(year, 0, 1);
   const startDay = startYear.getDay();
   const timeInMili = date - startYear;
   const days = Math.round(timeInMili / 86400000);
