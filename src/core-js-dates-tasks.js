@@ -237,8 +237,20 @@ function getWeekNumberByDate(date) {
  * Date(2024, 0, 13) => Date(2024, 8, 13)
  * Date(2023, 1, 1) => Date(2023, 9, 13)
  */
-function getNextFridayThe13th(/* date */) {
-  throw new Error('Not implemented');
+function getNextFridayThe13th(date) {
+  const testDate = new Date(date);
+  let currentMonth = testDate.getMonth();
+  if (testDate.getDate() === 13) {
+    currentMonth += 1;
+    testDate.setMonth(currentMonth);
+  } else {
+    testDate.setDate(13);
+  }
+  while (testDate.getDay() !== 5) {
+    currentMonth += 1;
+    testDate.setMonth(currentMonth);
+  }
+  return testDate;
 }
 
 /**
@@ -252,8 +264,9 @@ function getNextFridayThe13th(/* date */) {
  * Date(2024, 5, 1) => 2
  * Date(2024, 10, 10) => 4
  */
-function getQuarter(/* date */) {
-  throw new Error('Not implemented');
+function getQuarter(date) {
+  const month = date.getMonth();
+  return Math.floor(month / 3) + 1;
 }
 
 /**
@@ -274,8 +287,38 @@ function getQuarter(/* date */) {
  * { start: '01-01-2024', end: '15-01-2024' }, 1, 3 => ['01-01-2024', '05-01-2024', '09-01-2024', '13-01-2024']
  * { start: '01-01-2024', end: '10-01-2024' }, 1, 1 => ['01-01-2024', '03-01-2024', '05-01-2024', '07-01-2024', '09-01-2024']
  */
-function getWorkSchedule(/* period, countWorkDays, countOffDays */) {
-  throw new Error('Not implemented');
+function getWorkSchedule(period, countWorkDays, countOffDays) {
+  const start = new Date(period.start.split('-').reverse().join('/'));
+  const end = new Date(period.end.split('-').reverse().join('/'));
+  let days = start.getDate();
+  const result = [];
+  while (start < end) {
+    for (let i = 1; i <= countWorkDays; i += 1, days += 1) {
+      const lastDayOfMonth = new Date(start);
+      start.setDate(days);
+      if (lastDayOfMonth.getMonth() !== start.getMonth()) {
+        days = 1;
+      }
+      if (start > end) {
+        break;
+      }
+      const day = `${start.getDate()}`.padStart(2, 0);
+      const month = `${start.getMonth() + 1}`.padStart(2, 0);
+      result.push(`${day}-${month}-${start.getFullYear()}`);
+    }
+
+    for (let i = 1; i <= countOffDays; i += 1, days += 1) {
+      const lastDayOfMonth = new Date(start);
+      start.setDate(days);
+      if (lastDayOfMonth.getMonth() !== start.getMonth()) {
+        days = 1;
+      }
+      if (start > end) {
+        break;
+      }
+    }
+  }
+  return result;
 }
 
 /**
@@ -290,8 +333,15 @@ function getWorkSchedule(/* period, countWorkDays, countOffDays */) {
  * Date(2022, 2, 1) => false
  * Date(2020, 2, 1) => true
  */
-function isLeapYear(/* date */) {
-  throw new Error('Not implemented');
+function isLeapYear(date) {
+  const year = date.getFullYear();
+  if (year % 4 === 0) {
+    return true;
+  }
+  if (year % 100 === 0) {
+    return year % 400 === 0;
+  }
+  return false;
 }
 
 module.exports = {
