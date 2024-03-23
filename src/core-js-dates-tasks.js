@@ -222,7 +222,8 @@ function getWeekNumberByDate(date) {
   startYear.setDate(1);
   const startDay = startYear.getDay();
   const timeInMili = date - startYear;
-  return Math.ceil((timeInMili / 86400000 + startDay + 1) / 7);
+  const days = Math.round(timeInMili / 86400000);
+  return Math.ceil((days + startDay + 1) / 7);
 }
 
 /**
