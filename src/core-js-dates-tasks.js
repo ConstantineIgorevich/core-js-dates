@@ -51,7 +51,7 @@ function getTime(date) {
  */
 function getDayName(date) {
   const rezult = new Date(date);
-  switch (rezult.getDay()) {
+  switch (rezult.getUTCDay()) {
     case 0:
       return 'Sunday';
     case 1:
